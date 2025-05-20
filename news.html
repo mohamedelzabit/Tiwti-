@@ -1,1 +1,42 @@
-<h1>الأخبار</h1><p>جارٍ تحميل الأخبار المحدثة...</p>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>الأخبار - Tiwti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial; direction: rtl; padding: 20px; background: #f9f9f9; }
+        h1 { text-align: center; }
+        .article { background: white; padding: 15px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .article img { width: 100%; border-radius: 8px; }
+        .article h3 { margin-top: 10px; }
+        .article a { color: blue; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>آخر الأخبار</h1>
+    <div id="news-container">جارٍ تحميل الأخبار...</div>
+
+    <script>
+    async function fetchNews() {
+        const response = await fetch('https://newsapi.org/v2/top-headlines?language=ar&apiKey=32160ec210f34ffc9bc68eb99727d52b');
+        const data = await response.json();
+        const container = document.getElementById('news-container');
+        container.innerHTML = '';
+        data.articles.slice(0, 5).forEach(article => {
+            const item = document.createElement('div');
+            item.className = "article";
+            item.innerHTML = `
+                <img src="${article.urlToImage}" alt="صورة الخبر">
+                <h3>${article.title}</h3>
+                <p>${article.description || ''}</p>
+                <a href="${article.url}" target="_blank">اقرأ المزيد</a>
+            `;
+            container.appendChild(item);
+        });
+    }
+    fetchNews();
+    </script>
+</body>
+</html>
